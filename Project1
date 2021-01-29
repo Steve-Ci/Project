@@ -1,0 +1,104 @@
+
+import csv
+import sys
+
+def add_frequencies(dict,file,remove_case):
+    f=open('D:\pythonProject11\test2.txt',"r")
+    string=f.read()
+    l=len(string)
+    for i in range(l):
+        if remove_case == True:
+            if string[i].lower() in dict.keys():
+                dict[string[i].lower()] = 1
+            else:
+                dict[string[i].lower()] += 1
+        elif remove_case == False:
+            if string[i] in dict.keys():
+                dict[string[i]] += 1
+            else:
+                dict[string[i]] = 1
+    return dict
+
+def main(dict):
+    string2 = input('please enter the letter, as "xxxxx.txt" ')
+    dict={}
+    arguments = sys.argv
+    al=len(arguments)
+
+    file = None
+    for i in arguments:
+        if i.endswith('.txt'):
+            file = i
+    if file == None:
+        return "please add a file to the arguments"
+    else:
+        if "-c" in arguments:
+                dict=add_frequencies(dict,file,False)
+
+        elif "-l" in arguments:
+            for i in range(al):
+                if arguments[i] == "-l":
+                    lett = arguments[i+1]
+            dict =add_frequencies(dict,file,True)
+
+        elif "-c" in arguments and "-l" in arguments:
+            for i in range(al):
+                if arguments[i] == "-l":
+                    lett=arguments[i+1]
+            dict=add_frequencies(dict,file,False)
+
+        elif "-c" in arguments and "-l" in arguments:
+            for i in range(al):
+                if arguments[i] == "-l":
+                    lett=arguments[i+1]
+            dict=add_frequencies(dict,file,False)
+
+        elif "-c" in arguments and "-z" in arguments:
+            for i in string2:
+                if i not in dict.keys():
+                    dict[i]=0
+            dict=add_frequencies(dict,file,False)
+
+        elif "-l" in arguments and "-z" in arguments:
+            for i in range(al):
+                if arguments[i] == "-l":
+                    lett = arguments[i+1]
+            for i in string2:
+                if i not in dict.keys():
+                    dict[i]=0
+            dict =add_frequencies(dict,file,True)
+
+        elif "-c" in arguments and "-l" in arguments and "-z" in arguments:
+             for i in range(al):
+                if arguments[i] == "-l":
+                    lett = arguments[i+1]
+             for i in string2:
+                if i not in dict.keys():
+                    dict[i]=0
+             dict=add_frequencies(dict,file,False)
+
+        else:
+            dict =add_frequencies(dict,file,True)
+
+    return dict
+print(main(dict))
+
+af = open('mycsv','w')
+fdict=dict
+writer=csv.writer(af)
+for key,value in fdict.items():
+    writer.writerow([key,value])
+af.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
